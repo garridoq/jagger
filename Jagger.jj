@@ -30,10 +30,26 @@ void mainloop():
 { Expression a;}
 {
     (
-      a=expression() <EOL> {VisitorPrettyPrinter v = new VisitorPrettyPrinter(); a.accept(v); System.out.println(); }
+      a=comparison() <EOL> {VisitorPrettyPrinter v = new VisitorPrettyPrinter(); a.accept(v); System.out.println(); }
     )*
     <EOF>
 }
+// Comparison (axiom)
+// C -> E ('<'E | '<='E| '>'E | '>='E | '<>'E | '='E)
+Expression comparison():
+{Expression a,b;}
+{
+	a=expression()
+	(
+	  "<"  b=expression() {a = new BinOp(a,BOp.LT,b);}
+	| "<=" b=expression() {a = new BinOp(a,BOp.LEQ,b);}
+	| ">"  b=expression() {a = new BinOp(a,BOp.GT,b);}
+	| ">=" b=expression() {a = new BinOp(a,BOp.GEQ,b);}
+	| "<>" b=expression() {a = new BinOp(a,BOp.NEQ,b);}
+	| "="  b=expression() {a = new BinOp(a,BOp.EQ,b);}
+	)?{return a;}
+}
+
 
 // Expression (the axiom).
 // E -> T ('+'T | '-'T)*
@@ -65,5 +81,5 @@ Expression factor():
 { Token t; Expression e; }
 {
 	t=<NUMBER> { return new Number(Double.parseDouble(t.toString())); }
-    | "(" e=expression() ")" { return e; }
+    | "(" e=comparison() ")" { return e; }
 }
