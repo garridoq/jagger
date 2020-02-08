@@ -3,11 +3,16 @@ options { LOOKAHEAD=1; FORCE_LA_CHECK=true; }
 
 // Fonction principale
 PARSER_BEGIN(Jagger)
+
+import java.io.*;
 public class Jagger
 {
-    public static void main(String args[]) throws ParseException
+    public static void main(String args[]) throws ParseException,FileNotFoundException
     {
-        Jagger parser = new Jagger(System.in);
+		File initialFile = new File(args[0]);
+    	InputStream stream = new FileInputStream(initialFile);
+        Jagger parser = new Jagger(stream);
+
         parser.mainloop();
     }
 }
@@ -30,7 +35,8 @@ void mainloop():
 { Expression a;}
 {
     (
-      a=comparison() <EOL> {VisitorPrettyPrinter v = new VisitorPrettyPrinter(); a.accept(v); System.out.println(); }
+      a=comparison() <EOL> {VisitorPrettyPrinter v = new VisitorPrettyPrinter(); a.accept(v); System.out.println();
+	  						VisitorEval v2 = new VisitorEval(); a.accept(v2);v2.printEval();}
     )*
     <EOF>
 }
