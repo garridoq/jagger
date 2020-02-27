@@ -49,7 +49,21 @@ public class VisitorEval extends DefaultVisitor {
 				System.out.println("Error cannot evaluate");
 		}
 	}
+
+	public void visit(KeywordFunction f){
+		f.getParameter().accept(this);
+		switch(f.getOp()){
+			case PRINT:
+				System.out.print("Print: ");
+				System.out.print(this.res);
+				this.res = "";
+				break;
+			default:
+				System.out.println("Error cannot evaluate");
+		}
 	
+	}
+
 	public void visit(Number n){
 		this.res = Double.toString(n.getNum());
 	}

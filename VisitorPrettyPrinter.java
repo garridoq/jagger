@@ -8,7 +8,14 @@ public class VisitorPrettyPrinter extends DefaultVisitor {
 		b.getRight().accept(this);
 		System.out.print(")");
 	}
-	
+
+	public void visit(KeywordFunction f){
+		System.out.print(f.getOp());
+		System.out.print("(");
+		f.getParameter().accept(this);
+		System.out.print(")");
+	}
+
 	public void visit(Number n){
 		System.out.print(n.getNum());
 	}

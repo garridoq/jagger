@@ -27,6 +27,7 @@ TOKEN:
     < NUMBER: (<DIGIT>)+ ("." (<DIGIT>)*)? >  // A decimal number.
 |   < DIGIT: ["0"-"9"] >                      // A decimal digit.
 |   < EOL: "\n" >                             // End of line.
+|	< PRINT: "print">						  // print keyword
 }
 
 // Main lopp: read expressions on a line until end of file.
@@ -40,6 +41,7 @@ void mainloop():
     )*
     <EOF>
 }
+
 // Comparison (axiom)
 // C -> E ('<'E | '<='E| '>'E | '>='E | '<>'E | '='E)
 Expression comparison():
@@ -87,5 +89,6 @@ Expression factor():
 { Token t; Expression e; }
 {
 	t=<NUMBER> { return new Number(Double.parseDouble(t.toString())); }
+	| <PRINT> "(" e=comparison() ")" {return new KeywordFunction(Keywords.PRINT,e);}
     | "(" e=comparison() ")" { return e; }
 }
