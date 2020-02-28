@@ -28,6 +28,9 @@ TOKEN:
 |   < DIGIT: ["0"-"9"] >                      // A decimal digit.
 |   < EOL: "\n" >                             // End of line.
 |	< PRINT: "print">						  // print keyword
+|	< IF: "if">
+|	< THEN: "then">
+|	< ELSE: "else">
 }
 
 // Main lopp: read expressions on a line until end of file.
@@ -49,9 +52,19 @@ Expression statement():
 {
 	(
 	  e=print()
+	| e=conditional()
 	| e=comparison()
 	){return e;}
 }
+
+//Conditional statement
+// Cond -> 'if' C 'then' S 'else' S 
+Expression conditional():
+{Expression a,b,c;}
+{
+	<IF> a=statement() <THEN> b=statement() <ELSE>	c=statement() ({a = new Condition(a,b,c);}){return a;}
+}
+
 
 
 //Print (axiom)

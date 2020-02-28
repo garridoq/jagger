@@ -56,7 +56,7 @@ public class VisitorEval extends DefaultVisitor {
 			case PRINT:
 				System.out.print("Print: ");
 				System.out.print(this.res);
-				this.res = 0;
+				System.out.println();
 				break;
 			default:
 				System.out.println("Error cannot evaluate");
