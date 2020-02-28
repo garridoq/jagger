@@ -1,8 +1,8 @@
 public class VisitorEval extends DefaultVisitor {
-	private String res;
+	private double res;
 
 	public VisitorEval(){
-		this.res = "";
+		this.res = 0;
 	}
 
 	public void printEval(){
@@ -11,39 +11,39 @@ public class VisitorEval extends DefaultVisitor {
 
 	public void visit(BinOp b){
 		b.getLeft().accept(this);
-		String temp = this.res;
+		double temp = this.res;
 		b.getRight().accept(this);
 		switch(b.getOp()){
 			case PLUS:
-				this.res = Double.toString((Double.parseDouble(temp) + Double.parseDouble(this.res)));
+				this.res = temp + this.res;
 				break;
 			case MINUS:
-				this.res = Double.toString((Double.parseDouble(temp) - Double.parseDouble(this.res)));
+				this.res = temp - this.res;
 				break;
 			case MUL:
-				this.res = Double.toString((Double.parseDouble(temp) * Double.parseDouble(this.res)));
+				this.res = temp * this.res;
 				break;
 			case DIV:
-				this.res = Double.toString((Double.parseDouble(temp) / Double.parseDouble(this.res)));
+				this.res = temp / this.res;
 				break;
 		
 			case GT:
-				this.res = Boolean.toString((Double.parseDouble(temp) > Double.parseDouble(this.res)));
+				this.res = temp > this.res ? 1 : 0;
 				break;
 			case GEQ:
-				this.res = Boolean.toString((Double.parseDouble(temp) >= Double.parseDouble(this.res)));
+				this.res = temp >=this.res ? 1 : 0;
 				break;
 			case LT:
-				this.res = Boolean.toString((Double.parseDouble(temp) < Double.parseDouble(this.res)));
+				this.res = temp < this.res ? 1 : 0;
 				break;
 			case LEQ:
-				this.res = Boolean.toString((Double.parseDouble(temp) <= Double.parseDouble(this.res)));
+				this.res = temp <= this.res ? 1 : 0;
 				break;
 			case NEQ:
-				this.res = Boolean.toString((Double.parseDouble(temp) != Double.parseDouble(this.res)));
+				this.res = temp != this.res ? 1 : 0;
 				break;
 			case EQ:
-				this.res = Boolean.toString((Double.parseDouble(temp) == Double.parseDouble(this.res)));
+				this.res = temp == this.res ? 1 : 0;
 				break;
 			default:
 				System.out.println("Error cannot evaluate");
@@ -56,7 +56,7 @@ public class VisitorEval extends DefaultVisitor {
 			case PRINT:
 				System.out.print("Print: ");
 				System.out.print(this.res);
-				this.res = "";
+				this.res = 0;
 				break;
 			default:
 				System.out.println("Error cannot evaluate");
@@ -65,7 +65,7 @@ public class VisitorEval extends DefaultVisitor {
 	}
 
 	public void visit(Number n){
-		this.res = Double.toString(n.getNum());
+		this.res = n.getNum();
 	}
 
 }
