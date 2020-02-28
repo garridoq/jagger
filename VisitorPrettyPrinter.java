@@ -16,6 +16,15 @@ public class VisitorPrettyPrinter extends DefaultVisitor {
 		System.out.print(")");
 	}
 
+	public void visit(Condition c){
+		System.out.print("IF ");
+		c.getCond().accept(this);
+		System.out.print(" THEN ");
+		c.getIfTrue().accept(this);
+		System.out.print(" ELSE ");
+		c.getIfFalse().accept(this);
+	}
+
 	public void visit(Number n){
 		System.out.print(n.getNum());
 	}

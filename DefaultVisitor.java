@@ -7,4 +7,6 @@ public class DefaultVisitor implements Visitor{
 	}
 	public void visit(KeywordFunction f){	
 	}
+	public void visit(Condition c){	
+	}
 }

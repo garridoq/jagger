@@ -63,7 +63,15 @@ public class VisitorEval extends DefaultVisitor {
 		}
 	
 	}
-
+	
+	public void visit(Condition c){
+		c.getCond().accept(this);
+		if(this.res >= 0.0000001) // > 0 = True
+			c.getIfTrue().accept(this);
+		else
+			c.getIfFalse().accept(this);
+	}
+	
 	public void visit(Number n){
 		this.res = n.getNum();
 	}

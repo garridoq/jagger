@@ -36,11 +36,32 @@ void mainloop():
 { Expression a;}
 {
     (
-      a=comparison() <EOL> {VisitorPrettyPrinter v = new VisitorPrettyPrinter(); a.accept(v); System.out.println();
+      a=statement() <EOL> {VisitorPrettyPrinter v = new VisitorPrettyPrinter(); a.accept(v); System.out.println();
 	  						VisitorEval v2 = new VisitorEval(); a.accept(v2);v2.printEval();}
     )*
     <EOF>
 }
+
+//statement (axiom)
+//S -> P | C | E
+Expression statement():
+{Expression e;}
+{
+	(
+	  e=print()
+	| e=comparison()
+	){return e;}
+}
+
+
+//Print (axiom)
+// P -> 'print(' C ')'
+Expression print():
+{Expression a;}
+{
+	<PRINT> "(" a=comparison() ")"({a = new KeywordFunction(Keywords.PRINT, a);}){return a;}
+}
+
 
 // Comparison (axiom)
 // C -> E ('<'E | '<='E| '>'E | '>='E | '<>'E | '='E)
@@ -89,6 +110,5 @@ Expression factor():
 { Token t; Expression e; }
 {
 	t=<NUMBER> { return new Number(Double.parseDouble(t.toString())); }
-	| <PRINT> "(" e=comparison() ")" {return new KeywordFunction(Keywords.PRINT,e);}
     | "(" e=comparison() ")" { return e; }
 }
