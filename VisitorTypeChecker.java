@@ -20,6 +20,9 @@ public class VisitorTypeChecker extends DefaultVisitor {
 			System.out.println("Error, cannot apply operator " + b.getOp() + " with types " + temp + " and " + this.type);
 			this.errors=true;
 		}
+		if(b.getOp() != BOp.PLUS){
+			this.type = "Number";	
+		}
 	}
 
 	public void visit(KeywordFunction f){

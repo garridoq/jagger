@@ -14,3 +14,8 @@ if print(4) then 1 else 3
 "héhé" + 1
 if "2" then 1 else "4"
 "a" = 2
+"Hello " + "World"
+"Hello" < "World"
+"A" > "B"
+if "a" < "bonjour" then print(4) else "a"
+if "a" < "bonjour" then print(4) else 3
