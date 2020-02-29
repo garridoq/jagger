@@ -1,49 +1,53 @@
 public class VisitorEval extends DefaultVisitor {
-	private double res;
+	private double doubleRes;
+	private String strRes;
+	private String toPrint;
 
 	public VisitorEval(){
-		this.res = 0;
+		this.doubleRes = 0;
+		this.strRes = "";
+		this.toPrint = "";
 	}
 
 	public void printEval(){
-		System.out.println(this.res);
+		System.out.println(this.toPrint);
 	}
 
 	public void visit(BinOp b){
 		b.getLeft().accept(this);
-		double temp = this.res;
+		double temp = this.doubleRes;
 		b.getRight().accept(this);
 		switch(b.getOp()){
 			case PLUS:
-				this.res = temp + this.res;
+				this.doubleRes = temp + this.doubleRes;
 				break;
 			case MINUS:
-				this.res = temp - this.res;
+				this.doubleRes = temp - this.doubleRes;
 				break;
 			case MUL:
-				this.res = temp * this.res;
+				this.doubleRes = temp * this.doubleRes;
 				break;
 			case DIV:
-				this.res = temp / this.res;
+				this.doubleRes = temp / this.doubleRes;
 				break;
 		
 			case GT:
-				this.res = temp > this.res ? 1 : 0;
+				this.doubleRes = temp > this.doubleRes ? 1 : 0;
 				break;
 			case GEQ:
-				this.res = temp >=this.res ? 1 : 0;
+				this.doubleRes = temp >=this.doubleRes ? 1 : 0;
 				break;
 			case LT:
-				this.res = temp < this.res ? 1 : 0;
+				this.doubleRes = temp < this.doubleRes ? 1 : 0;
 				break;
 			case LEQ:
-				this.res = temp <= this.res ? 1 : 0;
+				this.doubleRes = temp <= this.doubleRes ? 1 : 0;
 				break;
 			case NEQ:
-				this.res = temp != this.res ? 1 : 0;
+				this.doubleRes = temp != this.doubleRes ? 1 : 0;
 				break;
 			case EQ:
-				this.res = temp == this.res ? 1 : 0;
+				this.doubleRes = temp == this.doubleRes ? 1 : 0;
 				break;
 			default:
 				System.out.println("Error cannot evaluate");
@@ -55,7 +59,7 @@ public class VisitorEval extends DefaultVisitor {
 		switch(f.getOp()){
 			case PRINT:
 				System.out.print("Print: ");
-				System.out.print(this.res);
+				System.out.print(this.doubleRes);
 				System.out.println();
 				break;
 			default:
@@ -66,14 +70,14 @@ public class VisitorEval extends DefaultVisitor {
 	
 	public void visit(Condition c){
 		c.getCond().accept(this);
-		if(this.res >= 0.0000001) // > 0 = True
+		if(this.doubleRes >= 0.0000001) // > 0 = True
 			c.getIfTrue().accept(this);
 		else
 			c.getIfFalse().accept(this);
 	}
 	
 	public void visit(Number n){
-		this.res = n.getNum();
+		this.doubleRes = n.getNum();
 	}
 
 }

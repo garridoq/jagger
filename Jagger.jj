@@ -25,6 +25,7 @@ SKIP: { " " | "\r" | "\t" }
 TOKEN:
 {
     < NUMBER: (<DIGIT>)+ ("." (<DIGIT>)*)? >  // A decimal number.
+|    <STRING: "\"" (~["\""])* "\"" >
 |   < DIGIT: ["0"-"9"] >                      // A decimal digit.
 |   < EOL: "\n" >                             // End of line.
 |	< PRINT: "print">						  // print keyword
@@ -39,8 +40,13 @@ void mainloop():
 { Expression a;}
 {
     (
-      a=statement() <EOL> {VisitorPrettyPrinter v = new VisitorPrettyPrinter(); a.accept(v); System.out.println();
-	  						VisitorEval v2 = new VisitorEval(); a.accept(v2);v2.printEval();}
+      a=statement() <EOL> {
+						   VisitorPrettyPrinter v = new VisitorPrettyPrinter(); a.accept(v); System.out.println();
+		  				   VisitorTypeChecker v3 = new VisitorTypeChecker(); a.accept(v3);
+					       if(!v3.hasErrors()){
+						   		VisitorEval v2 = new VisitorEval(); a.accept(v2);v2.printEval();
+							}
+						}
     )*
     <EOF>
 }
@@ -118,10 +124,11 @@ Expression term():
 }
 
 // Factor of an expression.
-// F -> <NUMBER> | "(" E ")"
+// F -> <NUMBER> | <STRING> | "(" E ")"
 Expression factor():
 { Token t; Expression e; }
 {
-	t=<NUMBER> { return new Number(Double.parseDouble(t.toString())); }
+	t= <NUMBER> { return new Number(Double.parseDouble(t.toString())); }
+	|t= <STRING>  { return new Str(t.toString().substring(1,t.image.length()-1));}
     | "(" e=comparison() ")" { return e; }
 }

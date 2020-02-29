@@ -28,5 +28,11 @@ public class VisitorPrettyPrinter extends DefaultVisitor {
 	public void visit(Number n){
 		System.out.print(n.getNum());
 	}
+	
+	public void visit(Str s){
+		System.out.print("'");
+		System.out.print(s.getString());
+		System.out.print("'");
+	}
 
 }
