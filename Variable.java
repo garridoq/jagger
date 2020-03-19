@@ -1,18 +1,28 @@
 public class Variable implements Expression{
 	
 	private String id;
-	private Expression value;
+	private VarDecl declaration;
 
-	public Variable(String id, Expression value){
+	public Variable(String id, VarDecl v){
 		this.id = id;
-		this.value = value;
+		this.declaration = v;
 	}
 
-	public Expression getValue() {
-		return this.value;
+	public Variable(String id){
+		this.id = id;
 	}
+
+
 	public String getId() {
 		return this.id;
+	}
+
+	public VarDecl getDeclaration() {
+		return this.declaration;
+	}
+
+	public void setDeclaration(VarDecl d) {
+		this.declaration = d;
 	}
 
 	public void accept(Visitor v){

@@ -1,12 +1,12 @@
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Stack;
-public class VisitorBinder implements Visitor{
+public class VisitorRenamer implements Visitor{
 	
-	private Stack<HashMap<String,VarDecl>> envs;
+	private int n;
 
-	public VisitorBinder(){
-		this.envs = new Stack<HashMap<String,VarDecl>>();
+	public VisitorRenamer(){
+		this.n = 0;
 	}
 
 	//Do nothing
@@ -30,33 +30,22 @@ public class VisitorBinder implements Visitor{
 	//Do smth
 	public void visit(Scope s){
 		//Add all variables into the env
-		this.envs.push(new HashMap<String,VarDecl>());
 		for(VarDecl v : s.getVars().values()){
-			v.getValue().accept(this);
-			this.envs.peek().put(v.getId(),v);
+			v.accept(this);
 		}
 		for(Expression e : s.getInstructions()){
 			e.accept(this);
 		}
-		this.envs.pop();
+
 	}
 	public void visit(VarDecl v){
-		
+		System.out.print("Renamed " + v.getId());
+		v.setId(v.getId() + "_" + String.valueOf(n));
+		System.out.println(" as "+v.getId());
+		this.n++;
 	}
+
 	//Bind to the declaration through the declaration field
 	public void visit(Variable v){
-		Iterator<HashMap<String,VarDecl>> it = this.envs.iterator();
-		boolean found = false;
-		for(int i=this.envs.size()-1; i >=0; i--){
-			HashMap<String,VarDecl> pair = this.envs.get(i);
-
-			if(pair.containsKey(v.getId())){
-				v.setDeclaration(pair.get(v.getId()));	
-				found=true;
-				break;
-			}
-		}
-		if(!found)
-			System.out.println("Symnol " + v.getId() + " is not defined.");
 	}	
 }

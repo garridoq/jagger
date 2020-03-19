@@ -14,4 +14,6 @@ public class DefaultVisitor implements Visitor{
 	}
 	public void visit(Variable v){
 	}	
+	public void visit(VarDecl v){
+	}	
 }

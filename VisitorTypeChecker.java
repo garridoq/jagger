@@ -2,6 +2,7 @@ public class VisitorTypeChecker extends DefaultVisitor {
 	
 	private String type;
 	private boolean errors;
+	
 	public VisitorTypeChecker(){
 		this.type = "";
 		this.errors = false;
@@ -53,6 +54,19 @@ public class VisitorTypeChecker extends DefaultVisitor {
 		this.type = n.getClass().getSimpleName();
 	}
 
-	public void visit(Scope s){	}
-	public void visit(Variable v){}	
+	public void visit(Scope s){
+		//Add declaration types 
+		for(VarDecl v : s.getVars().values()){
+			v.getValue().accept(this);
+			v.setType(this.type);
+		}
+		for(Expression e : s.getInstructions()){
+			e.accept(this);
+		}
+
+	}
+	public void visit(Variable v){
+		this.type = v.getDeclaration().getType();	
+		System.out.println("Variable " + v.getId() + " of type "+ this.type);
+	}	
 }

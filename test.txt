@@ -1,7 +1,9 @@
-let
-	var foo := 1
-	var bar := "test"
+let var i := 10
 in
-	print(1),
-	print("a")
+  print(i),
+  let var i := i * i
+  in
+    print(i)
+  end,
+  print(i)
 end

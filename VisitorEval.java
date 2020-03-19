@@ -1,13 +1,18 @@
+import java.util.HashMap;
 public class VisitorEval extends DefaultVisitor {
 	private double doubleRes;
 	private String strRes;
 	private String toPrint;
 	private String currentType;
 
+	private HashMap <String,String> varValues;
+
+
 	public VisitorEval(){
 		this.doubleRes = 0;
 		this.strRes = "";
 		this.currentType ="";
+		this.varValues = new HashMap<String,String>();
 	}
 
 	public void printEval(){
@@ -39,7 +44,7 @@ public class VisitorEval extends DefaultVisitor {
 			case DIV:
 				this.doubleRes = temp / this.doubleRes;
 				break;
-		
+
 			case GT:
 				this.doubleRes = temp > this.doubleRes ? 1 : 0;
 				break;
@@ -62,7 +67,7 @@ public class VisitorEval extends DefaultVisitor {
 				System.out.println("Error cannot evaluate");
 		}
 	}
-	
+
 	public void visitBinOpStr(BinOp b){
 		String temp = this.strRes;
 		b.getRight().accept(this);
@@ -76,7 +81,7 @@ public class VisitorEval extends DefaultVisitor {
 				break;
 			case DIV:
 				break;
-		
+
 			case GT:
 				this.doubleRes = temp.compareTo(this.strRes)>0 ? 1 : 0;
 				this.currentType="Number";
@@ -121,7 +126,7 @@ public class VisitorEval extends DefaultVisitor {
 		f.getParameter().accept(this);
 		switch(f.getOp()){
 			case PRINT:
-				System.out.print("Print: ");
+				//System.out.print("Print: ");
 				if(this.currentType.equals("Number"))
 					System.out.print(this.doubleRes);
 				if(this.currentType.equals("Str"))
@@ -131,9 +136,9 @@ public class VisitorEval extends DefaultVisitor {
 			default:
 				System.out.println("Error cannot evaluate");
 		}
-	
+
 	}
-	
+
 	public void visit(Condition c){
 		c.getCond().accept(this);
 		if(this.doubleRes >= 0.0000001) // > 0 = True
@@ -141,7 +146,7 @@ public class VisitorEval extends DefaultVisitor {
 		else
 			c.getIfFalse().accept(this);
 	}
-	
+
 	public void visit(Str n){
 		this.strRes = n.getString();
 		this.currentType= n.getClass().getSimpleName();
@@ -152,16 +157,27 @@ public class VisitorEval extends DefaultVisitor {
 	}
 
 	public void visit(Scope s){
-		for(Expression i : s.getInstructions())
+		for(VarDecl d : s.getVars().values()){
+			d.accept(this);
+		}
+		for(Expression i : s.getInstructions()){
 			i.accept(this);
+		}
 	}
 
-	public void visit(Variable v){
-		this.currentType = v.getValue().getClass().getSimpleName();
-		if(this.currentType.equals("Number"))
-			this.doubleRes = ((Number)v.getValue()).getNum();
+	public void visit(VarDecl v){
+		v.getValue().accept(this);
+		if(v.getType().equals("Number"))
+			this.varValues.put(v.getId(),Double.toString(this.doubleRes));
 		else
-			this.strRes = ((Str)v.getValue()).getString();
+			this.varValues.put(v.getId(),this.strRes);
+	}	
+	public void visit(Variable v){
+		this.currentType = v.getDeclaration().getType();
+		if(this.currentType.equals("Number"))
+			this.doubleRes = Double.parseDouble(this.varValues.get(v.getDeclaration().getId()));
+		else
+			this.strRes = this.varValues.get(v.getDeclaration().getId());
 	}	
 
 }

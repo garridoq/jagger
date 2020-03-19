@@ -7,13 +7,13 @@ PARSER_BEGIN(Jagger)
 import java.io.*;
 public class Jagger
 {
-	public static Scope scope;
+	public static Scope parent_scope;
     public static void main(String args[]) throws ParseException,FileNotFoundException
     {
 		File initialFile = new File(args[0]);
     	InputStream stream = new FileInputStream(initialFile);
         Jagger parser = new Jagger(stream);
-		scope = new Scope();
+		parent_scope = new Scope();
         parser.mainloop();
     }
 }
@@ -48,11 +48,33 @@ void mainloop():
 {
     (
       a=scope() <EOF> {
+		  				   System.out.println("============================================");
+		  				   System.out.println("               Pretty Printer               ");
+						   System.out.println("============================================");
+						   
 						   VisitorPrettyPrinter v = new VisitorPrettyPrinter(); a.accept(v); System.out.println();
-		  				   //VisitorTypeChecker v3 = new VisitorTypeChecker(); a.accept(v3);
-					       //if(!v3.hasErrors()){
-						   //		VisitorEval v2 = new VisitorEval(); a.accept(v2);v2.printEval();
-						//	}
+		  				   System.out.println("============================================");
+		  				   System.out.println("                  Binder                    ");
+		  				   System.out.println("============================================");
+						   
+						   VisitorBinder v1 = new VisitorBinder(); a.accept(v1); System.out.println();
+		  				   System.out.println("============================================");
+		  				   System.out.println("                 Renamer                    ");
+		  				   System.out.println("============================================");
+						   
+						   VisitorRenamer v4 = new VisitorRenamer(); a.accept(v4); System.out.println();
+		  				   System.out.println("============================================");
+		  				   System.out.println("               Type Checker                 ");
+		  				   System.out.println("============================================");
+		  				   
+						   VisitorTypeChecker v3 = new VisitorTypeChecker(); a.accept(v3);
+		  				   
+						   System.out.println("============================================");
+		  				   System.out.println("                Evaluation                  ");
+		  				   System.out.println("============================================");
+					       if(!v3.hasErrors()){
+						   		VisitorEval v2 = new VisitorEval(); a.accept(v2);
+						   }
 						}
     )*
     <EOF>
@@ -65,14 +87,14 @@ void mainloop():
 //			statement (,statement)* 
 //		end
 Expression scope():
-{Expression e;}
+{Expression e;Scope s = new Scope(); parent_scope=s;}
 {
 	<LET>
 		(declaration())*
 	<IN>
-		e=statement(){scope.addInstruction(e);} ("," e=statement(){scope.addInstruction(e);})
+		e=statement(){s.addInstruction(e);} ("," e=statement(){s.addInstruction(e);})*
 	<END>
-	{return scope;}
+	{return s;}
 
 }
 
@@ -82,7 +104,7 @@ void declaration():
 {Token t;Expression e;}
 {
 	
-	<VAR> t=<ID> <ASSIGN> e=statement(){scope.addDeclaration(t.toString(),new Variable(t.toString(),e));}
+	<VAR> t=<ID> <ASSIGN> e=statement(){parent_scope.addDeclaration(t.toString(),new VarDecl(t.toString(),e));}
 }
 
 //statement (axiom)
@@ -94,6 +116,7 @@ Expression statement():
 	  e=print()
 	| e=conditional()
 	| e=comparison()
+	| e=scope()
 	){return e;}
 }
 
@@ -162,7 +185,8 @@ Expression term():
 Expression factor():
 { Token t; Expression e; }
 {
-	t= <NUMBER> { return new Number(Double.parseDouble(t.toString())); }
+	t= <ID> {return new Variable(t.toString());}
+	|t= <NUMBER> { return new Number(Double.parseDouble(t.toString())); }
 	|t= <STRING>  { return new Str(t.toString().substring(1,t.image.length()-1));}
     | "(" e=comparison() ")" { return e; }
 }

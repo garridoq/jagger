@@ -2,15 +2,15 @@ import java.util.HashMap;
 import java.util.ArrayList;
 public class Scope implements Expression{
 
-	private HashMap<String, Variable> vars;
+	private HashMap<String, VarDecl> vars;
 	private ArrayList<Expression> instructions;
 
 	public Scope(){
-		this.vars = new HashMap<String,Variable>();
+		this.vars = new HashMap<String,VarDecl>();
 		this.instructions = new ArrayList<Expression>();
 	}
 
-	public HashMap<String, Variable> getVars() {
+	public HashMap<String, VarDecl> getVars() {
 		return this.vars;
 	}
 
@@ -18,7 +18,7 @@ public class Scope implements Expression{
 		return this.instructions;
 	}
 
-	public void addDeclaration(String id, Variable v){
+	public void addDeclaration(String id, VarDecl v){
 		this.vars.put(id, v);
 	}
 

@@ -42,15 +42,19 @@ public class VisitorPrettyPrinter extends DefaultVisitor {
 		System.out.print("'");
 	}
 
-	public void visit(Variable v){
-		System.out.print("var " + v.getId() + ":= ");
+	public void visit(VarDecl v){
+		System.out.print("NEW VAR " + v.getId() + ":= ");
 		v.getValue().accept(this);
 		System.out.println();
 	}
 
+	public void visit(Variable v){
+		System.out.print("(VAR " + v.getId() + ")");
+	}
+
 	public void visit(Scope s){
 		System.out.println("LET");
-		for(Variable v : s.getVars().values())
+		for(VarDecl v : s.getVars().values())
 			v.accept(this);
 		System.out.println("IN");
 		for(Expression i : s.getInstructions()){
