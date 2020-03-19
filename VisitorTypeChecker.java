@@ -33,7 +33,7 @@ public class VisitorTypeChecker extends DefaultVisitor {
 	public void visit(Condition c){
 		c.getCond().accept(this);
 		if(!this.type.equals("Number")){
-			System.out.println("Error, cannot interpret : "+this.type +" as boolean");
+			System.out.println("Error, cannot interpret : "+this.type +" as Boolean");
 			this.errors=true;
 		}
 		c.getIfTrue().accept(this);
@@ -53,4 +53,6 @@ public class VisitorTypeChecker extends DefaultVisitor {
 		this.type = n.getClass().getSimpleName();
 	}
 
+	public void visit(Scope s){	}
+	public void visit(Variable v){}	
 }

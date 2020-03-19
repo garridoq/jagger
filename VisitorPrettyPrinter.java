@@ -16,13 +16,20 @@ public class VisitorPrettyPrinter extends DefaultVisitor {
 		System.out.print(")");
 	}
 
-	public void visit(Condition c){
-		System.out.print("IF ");
+	public void visit(Condition c){ 
+		System.out.print("(");
+		System.out.print("IF(");
 		c.getCond().accept(this);
+		System.out.print(")");
 		System.out.print(" THEN ");
+		System.out.print("(");
 		c.getIfTrue().accept(this);
+		System.out.print(")");
 		System.out.print(" ELSE ");
+		System.out.print("(");
 		c.getIfFalse().accept(this);
+		System.out.print(")");
+		System.out.print(")");
 	}
 
 	public void visit(Number n){
@@ -33,6 +40,24 @@ public class VisitorPrettyPrinter extends DefaultVisitor {
 		System.out.print("'");
 		System.out.print(s.getString());
 		System.out.print("'");
+	}
+
+	public void visit(Variable v){
+		System.out.print("var " + v.getId() + ":= ");
+		v.getValue().accept(this);
+		System.out.println();
+	}
+
+	public void visit(Scope s){
+		System.out.println("LET");
+		for(Variable v : s.getVars().values())
+			v.accept(this);
+		System.out.println("IN");
+		for(Expression i : s.getInstructions()){
+			i.accept(this);
+			System.out.println();	
+		}
+		System.out.println("END");
 	}
 
 }

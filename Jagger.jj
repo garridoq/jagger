@@ -7,19 +7,20 @@ PARSER_BEGIN(Jagger)
 import java.io.*;
 public class Jagger
 {
+	public static Scope scope;
     public static void main(String args[]) throws ParseException,FileNotFoundException
     {
 		File initialFile = new File(args[0]);
     	InputStream stream = new FileInputStream(initialFile);
         Jagger parser = new Jagger(stream);
-
+		scope = new Scope();
         parser.mainloop();
     }
 }
 PARSER_END(Jagger)
 
 // Characters to ignore.
-SKIP: { " " | "\r" | "\t" }
+SKIP: { " " | "\r" | "\t" | "\n" }
 
 // Token specifications.
 TOKEN:
@@ -27,11 +28,17 @@ TOKEN:
     < NUMBER: (<DIGIT>)+ ("." (<DIGIT>)*)? >  // A decimal number.
 |    <STRING: "\"" (~["\""])* "\"" >
 |   < DIGIT: ["0"-"9"] >                      // A decimal digit.
-|   < EOL: "\n" >                             // End of line.
+//|   < EOL: "\n" >                             // End of line.
 |	< PRINT: "print">						  // print keyword
 |	< IF: "if">
 |	< THEN: "then">
 |	< ELSE: "else">
+|   < LET: "let">
+|   < IN: "in">
+|   < END: "end">
+| 	< ASSIGN: ":=">
+|	< VAR: "var">
+|   < ID: ["a"-"z","A"-"Z"](["a"-"z","A"-"Z","0"-"9"])* >
 }
 
 // Main lopp: read expressions on a line until end of file.
@@ -40,15 +47,42 @@ void mainloop():
 { Expression a;}
 {
     (
-      a=statement() <EOL> {
+      a=scope() <EOF> {
 						   VisitorPrettyPrinter v = new VisitorPrettyPrinter(); a.accept(v); System.out.println();
-		  				   VisitorTypeChecker v3 = new VisitorTypeChecker(); a.accept(v3);
-					       if(!v3.hasErrors()){
-						   		VisitorEval v2 = new VisitorEval(); a.accept(v2);v2.printEval();
-							}
+		  				   //VisitorTypeChecker v3 = new VisitorTypeChecker(); a.accept(v3);
+					       //if(!v3.hasErrors()){
+						   //		VisitorEval v2 = new VisitorEval(); a.accept(v2);v2.printEval();
+						//	}
 						}
     )*
     <EOF>
+}
+
+//Scope (axiom)
+//Sc -> let 
+//			(declarations)* 
+//		in 
+//			statement (,statement)* 
+//		end
+Expression scope():
+{Expression e;}
+{
+	<LET>
+		(declaration())*
+	<IN>
+		e=statement(){scope.addInstruction(e);} ("," e=statement(){scope.addInstruction(e);})
+	<END>
+	{return scope;}
+
+}
+
+//Declaration (axiom)
+//D -> var NAME := S
+void declaration():
+{Token t;Expression e;}
+{
+	
+	<VAR> t=<ID> <ASSIGN> e=statement(){scope.addDeclaration(t.toString(),new Variable(t.toString(),e));}
 }
 
 //statement (axiom)

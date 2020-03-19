@@ -151,5 +151,17 @@ public class VisitorEval extends DefaultVisitor {
 		this.currentType= n.getClass().getSimpleName();
 	}
 
+	public void visit(Scope s){
+		for(Expression i : s.getInstructions())
+			i.accept(this);
+	}
+
+	public void visit(Variable v){
+		this.currentType = v.getValue().getClass().getSimpleName();
+		if(this.currentType.equals("Number"))
+			this.doubleRes = ((Number)v.getValue()).getNum();
+		else
+			this.strRes = ((Str)v.getValue()).getString();
+	}	
 
 }

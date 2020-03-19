@@ -10,4 +10,8 @@ public class DefaultVisitor implements Visitor{
 	}
 	public void visit(Condition c){	
 	}
+	public void visit(Scope s){
+	}
+	public void visit(Variable v){
+	}	
 }

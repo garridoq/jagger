@@ -5,5 +5,7 @@ public interface Visitor{
 	public void visit(Str n);
 	public void visit(Condition n);
 	public void visit(KeywordFunction f);	
+	public void visit(Scope s);	
+	public void visit(Variable v);	
 
 }
