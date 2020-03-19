@@ -107,6 +107,21 @@ void declaration():
 	<VAR> t=<ID> <ASSIGN> e=statement(){parent_scope.addDeclaration(t.toString(),new VarDecl(t.toString(),e));}
 }
 
+
+//Assignment 
+// A -> <ID> := S
+Expression assignment():
+{Token t;Expression e;}
+{
+	t=<ID> <ASSIGN> 
+	(
+      e=conditional()
+	| e=comparison()
+	){e=new BinOp(new Variable(t.toString()),BOp.AFF,e);}{return e;}
+
+
+}
+
 //statement (axiom)
 //S -> P | C | E
 Expression statement():
@@ -115,6 +130,7 @@ Expression statement():
 	(
 	  e=print()
 	| e=conditional()
+	| e=assignment()
 	| e=comparison()
 	| e=scope()
 	){return e;}

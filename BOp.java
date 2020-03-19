@@ -10,8 +10,10 @@ public enum BOp{
 	LT("LT"),
 	LEQ("LEQ"),
 	EQ("EQ"),
-	NEQ("NEQ");
-	
+	NEQ("NEQ"),
+	//Affectation
+	AFF(":=");
+
 	private String name = "";
 
 	BOp(String name){

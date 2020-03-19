@@ -114,10 +114,20 @@ public class VisitorEval extends DefaultVisitor {
 
 	public void visit(BinOp b){
 		b.getLeft().accept(this);
-		if(this.currentType == "Number"){
+		//Handle affectation
+		if(b.getOp() == BOp.AFF){
+			Variable v = (Variable)b.getLeft();
+			b.getRight().accept(this);
+			if(this.currentType.equals("Number"))
+				this.varValues.put(v.getDeclaration().getId(),Double.toString(this.doubleRes));
+			else if(this.currentType.equals("Str"))
+				this.varValues.put(v.getDeclaration().getId(),this.strRes);
+			return;
+		}
+		if(this.currentType.equals("Number")){
 			visitBinOpNumber(b);
 		}
-		else if(this.currentType == "Str"){
+		else if(this.currentType.equals("Str")){
 			visitBinOpStr(b);
 		}
 	}

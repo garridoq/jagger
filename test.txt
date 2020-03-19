@@ -1,4 +1,9 @@
 let var foo := 1
     var bar := 1
-    var foo := 1
-in 1 end
+in 
+	print(foo),
+	foo := 4,
+	print(foo),
+	bar := foo*(3+bar),
+	print(bar)
+end
