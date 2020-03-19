@@ -11,7 +11,7 @@ public enum BOp{
 	LEQ("LEQ"),
 	EQ("EQ"),
 	NEQ("NEQ");
-
+	
 	private String name = "";
 
 	BOp(String name){

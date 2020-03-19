@@ -19,7 +19,10 @@ public class Scope implements Expression{
 	}
 
 	public void addDeclaration(String id, VarDecl v){
-		this.vars.put(id, v);
+		if(this.vars.containsKey(id))
+			System.out.println("Error, trying to redefine " + id);
+		else
+			this.vars.put(id, v);
 	}
 
 	public void addInstruction(Expression e){
