@@ -1,7 +1,7 @@
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Stack;
-public class VisitorBinder implements Visitor{
+public class VisitorBinder extends DefaultVisitor{
 	
 	private Stack<HashMap<String,VarDecl>> envs;
 
@@ -59,4 +59,11 @@ public class VisitorBinder implements Visitor{
 		if(!found)
 			System.out.println("Symnol " + v.getId() + " is not defined.");
 	}	
+	
+	public void visit(While w){
+		w.getCond().accept(this);
+		for(Expression e : w.getInstructions()){
+			e.accept(this);
+		}
+	}
 }

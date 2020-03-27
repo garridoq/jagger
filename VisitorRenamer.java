@@ -1,7 +1,7 @@
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Stack;
-public class VisitorRenamer implements Visitor{
+public class VisitorRenamer extends DefaultVisitor{
 	
 	private int n;
 
@@ -48,4 +48,11 @@ public class VisitorRenamer implements Visitor{
 	//Bind to the declaration through the declaration field
 	public void visit(Variable v){
 	}	
+	
+	public void visit(While w){	
+		w.getCond().accept(this);
+		for(Expression e : w.getInstructions()){
+			e.accept(this);
+		}
+	}
 }

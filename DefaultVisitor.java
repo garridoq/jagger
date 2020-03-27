@@ -16,4 +16,6 @@ public class DefaultVisitor implements Visitor{
 	}	
 	public void visit(VarDecl v){
 	}	
+	public void visit(While v){
+	}	
 }

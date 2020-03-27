@@ -69,4 +69,12 @@ public class VisitorTypeChecker extends DefaultVisitor {
 		this.type = v.getDeclaration().getType();	
 		System.out.println("Variable " + v.getId() + " of type "+ this.type);
 	}	
+	
+	public void visit(While w){
+		w.getCond();
+		for(Expression e : w.getInstructions()){
+			e.accept(this);
+		}
+
+	}
 }

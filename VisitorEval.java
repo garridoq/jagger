@@ -189,5 +189,15 @@ public class VisitorEval extends DefaultVisitor {
 		else
 			this.strRes = this.varValues.get(v.getDeclaration().getId());
 	}	
+	
+	public void visit(While w){
+		w.getCond().accept(this);
+		while(this.doubleRes > 0.0){
+			for(Expression e: w.getInstructions()){
+				e.accept(this);
+			}
+			w.getCond().accept(this);
+		}
+	}
 
 }

@@ -8,5 +8,6 @@ public interface Visitor{
 	public void visit(Scope s);	
 	public void visit(VarDecl v);	
 	public void visit(Variable v);	
+	public void visit(While v);	
 
 }

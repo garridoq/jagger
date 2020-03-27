@@ -1,9 +1,5 @@
-let var foo := 1
-    var bar := 1
-in 
-	print(foo),
-	foo := 4,
-	print(foo),
-	bar := foo*(3+bar),
-	print(bar)
+let var i := 1
+in
+  while i < 5 do
+    (print(i), i := i + 1)
 end

@@ -63,5 +63,14 @@ public class VisitorPrettyPrinter extends DefaultVisitor {
 		}
 		System.out.println("END");
 	}
-
+	public void visit(While w){
+		System.out.print("WHILE ");
+		w.getCond().accept(this);
+		System.out.println();
+		System.out.println("DO");
+		for(Expression e : w.getInstructions()){
+			e.accept(this);
+			System.out.println();
+		}	
+	}
 }
