@@ -181,7 +181,7 @@ Expression statement():
 Expression conditional():
 {Expression a,b,c;}
 {
-	<IF> a=statement() <THEN> b=statement() <ELSE>	c=statement() ({a = new Condition(a,b,c);}){return a;}
+	<IF> (a=conditional()|a=comparison() ) <THEN> b=statement() <ELSE>	c=statement() ({a = new Condition(a,b,c);}){return a;}
 }
 
 

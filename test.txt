@@ -1,7 +1,8 @@
 let 
   var i := 1
   var j := i + 3
+  var foo := if (j > 3) then "yes" else "no"
 in
-  for i := 2 to 3 do (print(i), print(j), j := i +4),
-  print(i)
+  for i := 2 to 3 do (print(i), print(j)),
+  if j > 3 then print("yes") else print("no")
 end
