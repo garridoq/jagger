@@ -109,7 +109,7 @@ void declaration():
 {Token t;Expression e;}
 {
 	
-	<VAR> t=<ID> <ASSIGN> e=statement(){parent_scope.addDeclaration(t.toString(),new VarDecl(t.toString(),e));}
+	<VAR> t=<ID> <ASSIGN> (e=conditional()|e=comparison() ){parent_scope.addDeclaration(t.toString(),new VarDecl(t.toString(),e));}
 }
 
 
