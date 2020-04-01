@@ -1,12 +1,12 @@
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Iterator;
 import java.util.Stack;
 public class VisitorBinder extends DefaultVisitor{
 	
-	private Stack<HashMap<String,VarDecl>> envs;
+	private Stack<LinkedHashMap<String,VarDecl>> envs;
 
 	public VisitorBinder(){
-		this.envs = new Stack<HashMap<String,VarDecl>>();
+		this.envs = new Stack<LinkedHashMap<String,VarDecl>>();
 	}
 
 	//Do nothing
@@ -30,7 +30,7 @@ public class VisitorBinder extends DefaultVisitor{
 	//Do smth
 	public void visit(Scope s){
 		//Add all variables into the env
-		this.envs.push(new HashMap<String,VarDecl>());
+		this.envs.push(new LinkedHashMap<String,VarDecl>());
 		for(VarDecl v : s.getVars().values()){
 			v.getValue().accept(this);
 			this.envs.peek().put(v.getId(),v);
@@ -45,10 +45,14 @@ public class VisitorBinder extends DefaultVisitor{
 	}
 	//Bind to the declaration through the declaration field
 	public void visit(Variable v){
-		Iterator<HashMap<String,VarDecl>> it = this.envs.iterator();
+		Iterator<LinkedHashMap<String,VarDecl>> it = this.envs.iterator();
 		boolean found = false;
 		for(int i=this.envs.size()-1; i >=0; i--){
-			HashMap<String,VarDecl> pair = this.envs.get(i);
+			LinkedHashMap<String,VarDecl> pair = this.envs.get(i);
+			
+			for(String s : pair.keySet()){
+				System.out.println("Found variable " + s);
+			}
 
 			if(pair.containsKey(v.getId())){
 				v.setDeclaration(pair.get(v.getId()));	
@@ -57,7 +61,7 @@ public class VisitorBinder extends DefaultVisitor{
 			}
 		}
 		if(!found)
-			System.out.println("Symnol " + v.getId() + " is not defined.");
+			System.out.println("Symbol " + v.getId() + " is not defined.");
 	}	
 	
 	public void visit(While w){

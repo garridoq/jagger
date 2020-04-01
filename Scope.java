@@ -1,16 +1,16 @@
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.ArrayList;
 public class Scope implements Expression{
 
-	private HashMap<String, VarDecl> vars;
+	private LinkedHashMap<String, VarDecl> vars;
 	private ArrayList<Expression> instructions;
 
 	public Scope(){
-		this.vars = new HashMap<String,VarDecl>();
+		this.vars = new LinkedHashMap<String,VarDecl>();
 		this.instructions = new ArrayList<Expression>();
 	}
 
-	public HashMap<String, VarDecl> getVars() {
+	public LinkedHashMap<String, VarDecl> getVars() {
 		return this.vars;
 	}
 

@@ -39,7 +39,9 @@ TOKEN:
 | 	< ASSIGN: ":=">
 |	< VAR: "var">
 |   < WHILE: "while">
+|   < FOR: "for">
 |   < DO: "do">
+|   < TO: "to">
 |   < ID: ["a"-"z","A"-"Z"](["a"-"z","A"-"Z","0"-"9"])* >
 }
 
@@ -111,6 +113,23 @@ void declaration():
 }
 
 
+Expression forLoop():
+{Expression c,e,start,end;Token t; 
+//Needed to desugar
+While w = new While();Scope s = new Scope(); parent_scope=s;}
+{
+	<FOR>
+		t=<ID> <ASSIGN> start=statement() <TO> end=statement() {s.addDeclaration(t.toString(),new VarDecl(t.toString(),start));
+																w.setCond(new BinOp(new Variable(t.toString()),BOp.LEQ,end));}
+	<DO>
+	(
+	"(" e=statement(){w.addInstruction(e);} ("," e=statement(){w.addInstruction(e);})*")"
+	| e=statement(){w.addInstruction(e);}
+	)
+	{w.addInstruction(new BinOp(new Variable(t.toString()),BOp.AFF,new BinOp(new Variable(t.toString()),BOp.PLUS,new Number(1))));
+	s.addInstruction(w); return s;}
+
+}
 //While
 // W -> <WHILE> C <DO> E(,E)*
 Expression whileLoop():
@@ -152,6 +171,7 @@ Expression statement():
 	| e=assignment()
 	| e=comparison()
 	| e=whileLoop()
+	| e=forLoop()
 	| e=scope()
 	){return e;}
 }
