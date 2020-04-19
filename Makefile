@@ -1,6 +1,3 @@
-all: build
-	java Jagger ./test.txt
-
 clean:
 	rm Jagger.java JaggerConstants.java JaggerTokenManager.java ParseException.java SimpleCharStream.java Token.java TokenMgrError.java
 	rm *.class
@@ -32,6 +29,8 @@ check: build
 	java Jagger ./tests/neg_binder.txt
 	@echo "================================="
 	java Jagger ./tests/neg_assign.txt
+	@echo "================================="
+	java Jagger ./tests/neg_for.txt
 	@echo "================================="
 
 run: build

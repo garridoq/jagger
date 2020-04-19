@@ -150,8 +150,7 @@ Expression statement():
 {Expression e;}
 {
 	(
-	 // e=assignment()
-	  e=print()
+	 e=print()
 	| e=conditional()
 	| e=comparison()
 	| e=whileLoop()

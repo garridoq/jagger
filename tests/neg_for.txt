@@ -1,0 +1,5 @@
+let
+	var foo := 1
+in
+	for i := print(foo) to 5 do print(i)
+end
