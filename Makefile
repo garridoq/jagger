@@ -33,3 +33,6 @@ check: build
 	@echo "================================="
 	java Jagger ./tests/neg_assign.txt
 	@echo "================================="
+
+run: build
+	java Jagger $(file)

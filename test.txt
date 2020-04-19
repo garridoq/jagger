@@ -2,5 +2,5 @@ let
 	var foo := 1
 	var bar := 4
 in
-	print(1 + foo := 2)
+	foo
 end
