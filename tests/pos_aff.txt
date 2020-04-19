@@ -1,0 +1,7 @@
+let
+	var a := 2
+in
+	print(a),
+	a := 3,
+	print(a)
+end

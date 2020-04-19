@@ -1,0 +1,32 @@
+let
+	var foo := -1
+	var bar := 2
+in
+	let
+		var foo := "Hello"
+		var baz := 2
+	in
+		print(foo),
+		print(baz)
+	end,
+	print(foo),
+	print(bar),
+	
+	let
+		var baz := foo * bar + 3
+		var bazz := baz - 5
+	in
+		print(baz),
+		print(bazz)
+	end,
+	let 
+		var i := 10
+	in
+	  print(i),
+	  let var i := i * i
+	  in
+		print(i)
+	  end,
+	  print(i)
+	end
+end

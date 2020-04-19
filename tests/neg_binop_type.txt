@@ -1,0 +1,8 @@
+let 
+	var i := 1
+in
+	"a" + i,
+	"a" - 2,
+	 5 + "Bonjour",
+	 +"Bonjour"
+end

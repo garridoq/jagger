@@ -1,0 +1,8 @@
+let 
+	var foo := 1
+    var bar := 1
+in 
+	foo := "aaaaaa",
+	bar := "test" + foo,
+	bar := if 1 then print("a") else print("b")
+end

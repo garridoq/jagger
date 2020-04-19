@@ -76,10 +76,13 @@ public class VisitorEval extends DefaultVisitor {
 				this.strRes = temp + this.strRes;
 				break;
 			case MINUS:
+				System.out.println("Error, cannot use operator - on Str");
 				break;
 			case MUL:
+				System.out.println("Error, cannot use operator * on Str");
 				break;
 			case DIV:
+				System.out.println("Error, cannot use operator / on Str");
 				break;
 
 			case GT:

@@ -1,0 +1,8 @@
+let 
+	var j := 1
+in
+	if 1 then "a" else 2 ,
+	if 1 then print("a") else "b" ,
+	if 1 then (for i := 1 to 2 do print(i)) else 2,
+	if 1 then (while j > -1  do (print(j),j := -1)) else 2
+end

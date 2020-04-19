@@ -14,10 +14,7 @@ public class VisitorRenamer extends DefaultVisitor{
 		b.getLeft().accept(this);
 		b.getRight().accept(this);
 	}
-	public void visit(Number b){
-	}
-	public void visit(Str b){
-	}
+	
 	public void visit(KeywordFunction f){	
 		f.getParameter().accept(this);
 	}
@@ -39,9 +36,9 @@ public class VisitorRenamer extends DefaultVisitor{
 
 	}
 	public void visit(VarDecl v){
-		System.out.print("Renamed " + v.getId());
+		//System.out.print("Renamed " + v.getId());
 		v.setId(v.getId() + "_" + String.valueOf(n));
-		System.out.println(" as "+v.getId());
+		//System.out.println(" as "+v.getId());
 		this.n++;
 	}
 

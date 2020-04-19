@@ -1,0 +1,12 @@
+let 
+	var foo := 1
+    var bar := 1
+in 
+	while i < 3 do print(i),
+	let
+		var baz := "-2"
+	in
+	1
+	end,
+	print(baz)
+end

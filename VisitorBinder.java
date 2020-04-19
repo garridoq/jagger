@@ -4,9 +4,14 @@ import java.util.Stack;
 public class VisitorBinder extends DefaultVisitor{
 	
 	private Stack<LinkedHashMap<String,VarDecl>> envs;
+	private boolean errors = false;
 
 	public VisitorBinder(){
 		this.envs = new Stack<LinkedHashMap<String,VarDecl>>();
+	}
+
+	public boolean hasErrors(){
+		return this.errors;
 	}
 
 	//Do nothing
@@ -51,7 +56,7 @@ public class VisitorBinder extends DefaultVisitor{
 			LinkedHashMap<String,VarDecl> pair = this.envs.get(i);
 			
 			for(String s : pair.keySet()){
-				System.out.println("Found variable " + s);
+				//System.out.println("Found variable " + s);
 			}
 
 			if(pair.containsKey(v.getId())){
@@ -60,8 +65,10 @@ public class VisitorBinder extends DefaultVisitor{
 				break;
 			}
 		}
-		if(!found)
-			System.out.println("Symbol " + v.getId() + " is not defined.");
+		if(!found){
+			System.out.println("Error, symbol " + v.getId() + " is not defined.");
+			this.errors=true;
+		}
 	}	
 	
 	public void visit(While w){

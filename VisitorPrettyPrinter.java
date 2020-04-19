@@ -1,4 +1,5 @@
 public class VisitorPrettyPrinter extends DefaultVisitor {
+ 
 	public void visit(BinOp b){
 		System.out.print("(");
 		b.getLeft().accept(this);
