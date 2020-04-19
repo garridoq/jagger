@@ -22,7 +22,10 @@ public class VisitorTypeChecker extends DefaultVisitor {
 			this.errors=true;
 		}
 		//Only + can be used with strings and numbers
-		if(b.getOp() != BOp.PLUS){
+		if(b.getOp() == BOp.AFF){
+			this.type ="Void";
+		}	
+		else if(b.getOp() != BOp.PLUS){
 			this.type = "Number";	
 		}
 	}

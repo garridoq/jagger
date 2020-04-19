@@ -119,6 +119,10 @@ public class VisitorEval extends DefaultVisitor {
 		b.getLeft().accept(this);
 		//Handle affectation
 		if(b.getOp() == BOp.AFF){
+			if(!b.getLeft().getClass().getSimpleName().equals("Variable")){
+				System.out.println("Error, cannot assign value to non variable");
+				return;
+			}
 			Variable v = (Variable)b.getLeft();
 			b.getRight().accept(this);
 			if(this.currentType.equals("Number"))

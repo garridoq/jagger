@@ -150,8 +150,8 @@ Expression statement():
 {Expression e;}
 {
 	(
-	  e=assignment()
-	|  e=print()
+	 // e=assignment()
+	  e=print()
 	| e=conditional()
 	| e=comparison()
 	| e=whileLoop()
@@ -217,6 +217,7 @@ Expression term():
     (
       "*" b=factor() { a = new BinOp(a,BOp.MUL,b); }
     | "/" b=factor() { a = new BinOp(a,BOp.DIV,b); }
+	| <ASSIGN> (b=comparison()|b=conditional()){a=new BinOp(a,BOp.AFF,b);}
     )* { return a; }
 }
 

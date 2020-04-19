@@ -1,8 +1,6 @@
 let
 	var foo := 1
-	var bar := if foo > 10 then print(1) else print(2)
-
+	var bar := 4
 in
-	foo := if foo > 10 then print(1) else print(2),
-	print(bar)
+	print(1 + foo := 2)
 end

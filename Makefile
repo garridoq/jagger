@@ -31,3 +31,5 @@ check: build
 	@echo "================================="
 	java Jagger ./tests/neg_binder.txt
 	@echo "================================="
+	java Jagger ./tests/neg_assign.txt
+	@echo "================================="

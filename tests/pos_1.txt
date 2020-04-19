@@ -13,5 +13,7 @@ in
 	if 1 <> 2 then print("a") else print("b"),
 	print(1>=0),
 	print(1=0),
-	print(1+-2*(3+4*(5+2)))
+	print(1+-2*(3+4*(5+2))),
+	foo = 1,
+	bar*bar
 end
