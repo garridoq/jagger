@@ -52,30 +52,39 @@ void mainloop():
 {
     (
       a=scope() <EOF> {
+		  				   /*
 		  				   System.out.println("============================================");
 		  				   System.out.println("               Pretty Printer               ");
 						   System.out.println("============================================");
+		  				   */
 						   
 						   VisitorPrettyPrinter v = new VisitorPrettyPrinter(); a.accept(v); System.out.println();
-		  				   System.out.println("============================================");
+		  				   /*
+						   System.out.println("============================================");
 		  				   System.out.println("                  Binder                    ");
 		  				   System.out.println("============================================");
-						   
+						   */
 						   VisitorBinder v1 = new VisitorBinder(); a.accept(v1); System.out.println();
+		  				   /*
 		  				   System.out.println("============================================");
 		  				   System.out.println("                 Renamer                    ");
 		  				   System.out.println("============================================");
+						   */
 						   
 						   VisitorRenamer v4 = new VisitorRenamer(); a.accept(v4); System.out.println();
+		  				   /*
 		  				   System.out.println("============================================");
 		  				   System.out.println("               Type Checker                 ");
 		  				   System.out.println("============================================");
+						   */
 		  				   
 						   VisitorTypeChecker v3 = new VisitorTypeChecker(); a.accept(v3);
 		  				   
+		  				   /*
 						   System.out.println("============================================");
 		  				   System.out.println("                Evaluation                  ");
 		  				   System.out.println("============================================");
+						   */
 					       if(!v3.hasErrors()){
 						   		VisitorEval v2 = new VisitorEval(); a.accept(v2);
 						   }
@@ -191,7 +200,7 @@ Expression conditional():
 Expression print():
 {Expression a;}
 {
-	<PRINT> "(" a=comparison() ")"({a = new KeywordFunction(Keywords.PRINT, a);}){return a;}
+	<PRINT> "(" (a=comparison()|a=conditional()) ")"({a = new KeywordFunction(Keywords.PRINT, a);}){return a;}
 }
 
 

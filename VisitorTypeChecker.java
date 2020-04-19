@@ -17,10 +17,11 @@ public class VisitorTypeChecker extends DefaultVisitor {
 		b.getLeft().accept(this);
 		String temp = this.type;
 		b.getRight().accept(this);
-		if(!temp.equals(this.type)){
+		if(!temp.equals(this.type) || temp.equals("Void") || this.type.equals("Void")){		
 			System.out.println("Error, cannot apply operator " + b.getOp() + " with types " + temp + " and " + this.type);
 			this.errors=true;
 		}
+		//Only + can be used with strings and numbers
 		if(b.getOp() != BOp.PLUS){
 			this.type = "Number";	
 		}
@@ -29,6 +30,11 @@ public class VisitorTypeChecker extends DefaultVisitor {
 	public void visit(KeywordFunction f){
 		// Cannot fail since we can print both Strings and Doubles
 		f.getParameter().accept(this);	
+		if(this.type.equals("Void")){
+			System.out.println("Error, trying to print data of type Void");
+			this.errors=true;
+		}
+		this.type="Void";
 	}
 	
 	public void visit(Condition c){
@@ -57,17 +63,26 @@ public class VisitorTypeChecker extends DefaultVisitor {
 	public void visit(Scope s){
 		//Add declaration types 
 		for(VarDecl v : s.getVars().values()){
-			v.getValue().accept(this);
-			v.setType(this.type);
+			v.accept(this);
 		}
 		for(Expression e : s.getInstructions()){
 			e.accept(this);
 		}
+		this.type="Void";
 
 	}
+	public void visit(VarDecl v){
+		v.getValue().accept(this);
+		if(this.type.equals("Void")){
+			System.out.println("Error, trying to assing type Void to variable declaration of " + v.getId().substring(0,v.getId().lastIndexOf('_')));
+			this.errors=true;	
+		}
+		v.setType(this.type);
+	}
+
 	public void visit(Variable v){
 		this.type = v.getDeclaration().getType();	
-		System.out.println("Variable " + v.getId() + " of type "+ this.type);
+		//System.out.println("Variable " + v.getId() + " of type "+ this.type);
 	}	
 	
 	public void visit(While w){
@@ -75,6 +90,7 @@ public class VisitorTypeChecker extends DefaultVisitor {
 		for(Expression e : w.getInstructions()){
 			e.accept(this);
 		}
+		this.type="Void";
 
 	}
 }
