@@ -166,9 +166,9 @@ Expression statement():
 {Expression e;}
 {
 	(
-	  e=print()
+	  e=assignment()
+	| e=print()
 	| e=conditional()
-	| e=assignment()
 	| e=comparison()
 	| e=whileLoop()
 	| e=forLoop()
@@ -241,8 +241,10 @@ Expression term():
 Expression factor():
 { Token t; Expression e; }
 {
-	t= <ID> {return new Variable(t.toString());}
+	 t= <ID> {return new Variable(t.toString());}
 	|t= <NUMBER> { return new Number(Double.parseDouble(t.toString())); }
 	|t= <STRING>  { return new Str(t.toString().substring(1,t.image.length()-1));}
-    | "(" e=comparison() ")" { return e; }
+    | "(" e=statement() ")" { return e; }
+	| "-"  e=factor() {return new BinOp(new Number(0), BOp.MINUS,e);}
+	| "+"  e=factor() {return new BinOp(new Number(0), BOp.PLUS,e);}
 }

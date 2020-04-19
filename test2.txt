@@ -1,10 +1,17 @@
-let
-	var foo := 1
-	var bar := "test"
+let 
+	var foo := 2
+	var baz := if foo = 2 then "baz=2" else "baz!=2"
 in
-	print(1),
-	print(1+4 < 7),
-	print(foo),
-	print(babar),
-	if bar = "test" then print(1) else print(foo +2)
+	let
+		var foo :=4
+	in	
+		print("Foo from 4 to 10 with step 2"),
+		while foo < 10 do (print(foo), foo:=foo+2)
+	end,
+	print("Foo from 2 to 0 with step 2"),
+	while foo > 0  do (print(foo), foo:=foo-2),
+	print("Foo squared from 1 to 10 with step 1"),
+	(for foo := 1 to 10 do print(foo*foo)),
+	print(baz),
+	foo
 end
