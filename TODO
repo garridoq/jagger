@@ -1,7 +1,0 @@
-- Implémenter binder qui fait un threaded AST
-	- Quand on rencontre une variable : 
-		-lui ajouter une référence vers sa déclaration
-Ainsi, plus besoin de garder la pile de hashmaps et donc on peut typecheck statiquement
-
-Il faut faire un renamer qui va rename els variables dans chaque scope avec un id unique
-Ensuite on fera une hashmap d'évaluation des variables, qui associe à V_X sont évaluation
